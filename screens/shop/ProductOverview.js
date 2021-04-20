@@ -1,9 +1,10 @@
 import React from "react";
-import { StyleSheet, View, FlatList } from "react-native";
+import { StyleSheet, View, FlatList, TouchableOpacity } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import ThemeBasedColors from "../../src/themes/Colors";
 import Normalize from "../../components/Reusable/Normalize";
 import ProductItem from "../../components/Shop/ProductItem";
+import { Icon } from "react-native-elements";
 
 const Colors = ThemeBasedColors();
 
@@ -39,6 +40,25 @@ const ProductOverview = (props) => {
 };
 
 export default ProductOverview;
+
+ProductOverview.navigationOptions = (navData) => {
+  return {
+    headerRight: () => (
+      <TouchableOpacity
+        onPress={() => navData.navigation.navigate({ routeName: "Cart" })}
+      >
+        <View style={{ marginRight: Normalize(12) }}>
+          <Icon
+            name="shoppingcart"
+            type="antdesign"
+            size={Normalize(20)}
+            color={Colors.textDark}
+          />
+        </View>
+      </TouchableOpacity>
+    ),
+  };
+};
 
 const styles = StyleSheet.create({
   screen: {

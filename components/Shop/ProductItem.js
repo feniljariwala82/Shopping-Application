@@ -14,6 +14,7 @@ import DefaultText from "../Reusable/DefaultText";
 import ThemeBasedColors from "../../src/themes/Colors";
 import { useDispatch } from "react-redux";
 import * as cartActions from "../../store/actions/cartAct";
+import Toast from "react-native-simple-toast";
 
 const { height } = Dimensions.get("window");
 const Colors = ThemeBasedColors();
@@ -41,7 +42,11 @@ const ProductItem = (props) => {
   const onAddToCart = (product) => {
     dispatch(cartActions.addToCart(product));
     dispatch(cartActions.countTotalAmount());
-    // console.log(product);
+    Toast.showWithGravity(
+      `${product.title} has been added to cart`,
+      Toast.LONG,
+      Toast.BOTTOM
+    );
   };
 
   return (

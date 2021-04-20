@@ -14,6 +14,7 @@ import CustomButton from "../../components/layout/CustomButton";
 import ThemeBasedColors from "../../src/themes/Colors";
 import { Icon } from "react-native-elements";
 import * as cartActions from "../../store/actions/cartAct";
+import Toast from "react-native-simple-toast";
 
 const { height, width } = Dimensions.get("window");
 const Colors = ThemeBasedColors();
@@ -96,11 +97,17 @@ const ProductDetail = (props) => {
           onUserPress={() => {
             dispatch(cartActions.addToCart(productData));
             dispatch(cartActions.countTotalAmount());
+            Toast.showWithGravity(
+              `${productData.title} has been added to cart`,
+              Toast.LONG,
+              Toast.BOTTOM
+            );
           }}
         />
         {/* buy now */}
         <CustomButton
           buttonContainer={styles.buttonContainer}
+          buttonContainer={{ backgroundColor: Colors.accent }}
           title="Buy Now"
           iconName="shopping-bag"
           type="feather"

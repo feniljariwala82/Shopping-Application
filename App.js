@@ -17,7 +17,7 @@ enableScreens();
 // Redux configuration
 const rootReducer = combineReducers({
   products: productReducer,
-  carts: cartReducer,
+  cart: cartReducer,
 });
 const store = createStore(rootReducer, composeWithDevTools());
 

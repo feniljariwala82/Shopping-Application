@@ -5,8 +5,7 @@ import { Dimensions, Platform, View, TouchableOpacity } from "react-native";
 import ProductOverviewScreen from "../screens/shop/ProductOverview";
 import ThemeBasedColors from "../src/themes/Colors";
 import ProductDetailScreen from "../screens/shop/ProductDetail";
-import Normalize from "../components/Reusable/Normalize";
-import { Icon } from "react-native-elements";
+import CartScreen from "../screens/shop/Cart";
 
 const Colors = ThemeBasedColors();
 const { width } = Dimensions.get("window");
@@ -25,6 +24,12 @@ const ProductNavigator = createStackNavigator(
         title: "Product Details",
       },
     },
+    Cart: {
+      screen: CartScreen,
+      navigationOptions: {
+        title: "Cart",
+      },
+    },
   },
   {
     mode: Platform.OS === "android" ? "card" : "modal",
@@ -38,18 +43,6 @@ const ProductNavigator = createStackNavigator(
         fontSize: width * 0.065,
         fontFamily: "open-sans-bold",
       },
-      headerRight: () => (
-        <TouchableOpacity>
-          <View style={{ marginRight: Normalize(10) }}>
-            <Icon
-              name="shoppingcart"
-              type="antdesign"
-              size={Normalize(20)}
-              color={Colors.textDark}
-            />
-          </View>
-        </TouchableOpacity>
-      ),
     },
   }
 );

@@ -22,15 +22,26 @@ const CustomButton = (props) => {
   return (
     <View style={{ ...styles.buttonContainer, ...props.buttonContainer }}>
       <TouchableComp onPress={props.onUserPress}>
-        <View style={styles.iconContainer}>
-          <Icon
-            name={props.iconName}
-            type={props.type}
-            color={props.color}
-            size={props.size}
-          />
-          <Text style={styles.text}>{props.title}</Text>
-        </View>
+        {props.isIconOnly === true ? (
+          <View style={styles.iconContainer}>
+            <Icon
+              name={props.iconName}
+              type={props.type}
+              color={props.color}
+              size={props.size}
+            />
+          </View>
+        ) : (
+          <View style={styles.iconContainer}>
+            <Icon
+              name={props.iconName}
+              type={props.type}
+              color={props.color}
+              size={props.size}
+            />
+            <Text style={styles.text}>{props.title}</Text>
+          </View>
+        )}
       </TouchableComp>
     </View>
   );
