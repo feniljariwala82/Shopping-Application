@@ -6,10 +6,14 @@ import { createStore, combineReducers } from "redux";
 import { Provider } from "react-redux";
 import { composeWithDevTools } from "redux-devtools-extension";
 import { enableScreens } from "react-native-screens";
-import productReducer from "./store/reducers/productReduce";
-import cartReducer from "./store/reducers/cartReduce";
 import ThemeBasedColors from "./src/themes/Colors";
 import ShopNavigator from "./navigation/ShopNavigator";
+/**
+ * Reducers
+ */
+import productReducer from "./store/reducers/productReduce";
+import cartReducer from "./store/reducers/cartReduce";
+import orderReduce from "./store/reducers/orderReduce";
 
 // calling this function to improve memory and CPU usage
 enableScreens();
@@ -18,6 +22,7 @@ enableScreens();
 const rootReducer = combineReducers({
   products: productReducer,
   cart: cartReducer,
+  order: orderReduce,
 });
 const store = createStore(rootReducer, composeWithDevTools());
 

@@ -26,7 +26,7 @@ const Cart = (props) => {
   };
 
   return (
-    <ScrollView style={{ backgroundColor: Colors.backgroundColor }}>
+    <ScrollView style={{ backgroundColor: Colors.backgroundColor, flex: 1 }}>
       <View style={styles.screen}>
         {cartItems.length > 0 ? (
           <View>
@@ -61,7 +61,12 @@ const Cart = (props) => {
           </View>
         ) : (
           <View
-            style={{ alignItems: "center", justifyContent: "center", flex: 1 }}
+            style={{
+              alignItems: "center",
+              justifyContent: "center",
+              flex: 1,
+              flexDirection: "column",
+            }}
           >
             <MaterialCommunityIcons
               name="emoticon-sad-outline"

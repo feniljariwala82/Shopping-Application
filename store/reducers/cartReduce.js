@@ -1,5 +1,4 @@
-import { ADD_TO_CART, COUNT_TOTAL_AMOUNT } from "../types";
-import CartItem from "../../models/Cart-item";
+import { ADD_TO_CART, COUNT_TOTAL_AMOUNT, REMOVE_FROM_CART } from "../types";
 
 const initialState = {
   cartItems: [],
@@ -35,6 +34,21 @@ export default (state = initialState, { type, payload }) => {
     case COUNT_TOTAL_AMOUNT:
       return {
         ...state,
+        totalAmount: amountCalculator(state.cartItems),
+      };
+
+    case REMOVE_FROM_CART:
+      const updatedCartItems = (payload) => {
+        for (let i = 0; i < state.cartItems.length; i++) {
+          if (state.cartItems[i].id === payload) {
+            state.cartItems.splice(i, 1);
+          }
+        }
+      };
+      updatedCartItems(payload);
+      return {
+        ...state,
+        cartItems: state.cartItems,
         totalAmount: amountCalculator(state.cartItems),
       };
 

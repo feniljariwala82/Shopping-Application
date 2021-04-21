@@ -10,6 +10,7 @@ const ThemeBasedColors = (theme = "light") => {
       textDark: "#171717", // black
       textLight: "#898989", // dark grey
       borderColor: "#171717", // black
+      danger: "#ce1212", // danger
     };
   } else {
     /**
@@ -22,6 +23,7 @@ const ThemeBasedColors = (theme = "light") => {
       textDark: "#ffffff", // white
       textLight: "#898989", // dark grey
       borderColor: "#ffffff", // white
+      danger: "#ce1212", // danger
     };
   }
 };

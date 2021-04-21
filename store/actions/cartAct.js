@@ -12,3 +12,10 @@ export const countTotalAmount = () => {
     type: COUNT_TOTAL_AMOUNT,
   };
 };
+
+export const deleteFromCart = (id) => {
+  return {
+    type: REMOVE_FROM_CART,
+    payload: id,
+  };
+};

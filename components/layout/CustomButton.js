@@ -21,8 +21,8 @@ const CustomButton = (props) => {
 
   return (
     <View style={{ ...styles.buttonContainer, ...props.buttonContainer }}>
-      <TouchableComp onPress={props.onUserPress}>
-        {props.isIconOnly === true ? (
+      {props.isIconOnly === true ? (
+        <TouchableComp onPress={props.onUserPress}>
           <View style={styles.iconContainer}>
             <Icon
               name={props.iconName}
@@ -31,7 +31,9 @@ const CustomButton = (props) => {
               size={props.size}
             />
           </View>
-        ) : (
+        </TouchableComp>
+      ) : (
+        <TouchableComp onPress={props.onUserPress}>
           <View style={styles.iconContainer}>
             <Icon
               name={props.iconName}
@@ -41,8 +43,8 @@ const CustomButton = (props) => {
             />
             <Text style={styles.text}>{props.title}</Text>
           </View>
-        )}
-      </TouchableComp>
+        </TouchableComp>
+      )}
     </View>
   );
 };
