@@ -1,4 +1,9 @@
-import { ADD_TO_CART, COUNT_TOTAL_AMOUNT, REMOVE_FROM_CART } from "../types";
+import {
+  ADD_TO_CART,
+  COUNT_TOTAL_AMOUNT,
+  REMOVE_FROM_CART,
+  CLEAR_CART,
+} from "../types";
 
 const initialState = {
   cartItems: [],
@@ -50,6 +55,12 @@ export default (state = initialState, { type, payload }) => {
         ...state,
         cartItems: state.cartItems,
         totalAmount: amountCalculator(state.cartItems),
+      };
+
+    case CLEAR_CART:
+      return {
+        cartItems: [],
+        totalAmount: 0,
       };
 
     default:

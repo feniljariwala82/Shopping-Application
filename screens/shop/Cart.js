@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, Text, View, ScrollView } from "react-native";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import DefaultText from "../../components/Reusable/DefaultText";
 import Normalize from "../../components/Reusable/Normalize";
 import ThemeBasedColors from "../../src/themes/Colors";
@@ -8,6 +8,8 @@ import CustomButton from "../../components/layout/CustomButton";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { FlatList } from "react-native-gesture-handler";
 import CartItem from "../../components/Shop/CartItem";
+import * as orderActions from "../../store/actions/orderAct";
+import * as cartActions from "../../store/actions/cartAct";
 
 const Colors = ThemeBasedColors();
 
@@ -20,6 +22,8 @@ const Cart = (props) => {
     }
     return itemArray;
   });
+
+  const dispatch = useDispatch();
 
   const renderProduct = (itemData) => {
     return <CartItem item={itemData.item} />;
@@ -44,12 +48,16 @@ const Cart = (props) => {
                 </Text>
               </DefaultText>
               <CustomButton
-                title="Buy Now"
+                title="Order Now"
                 iconName="shopping-bag"
                 type="feather"
                 color="white"
                 size={Normalize(18)}
                 buttonContainer={styles.button}
+                onUserPress={() => {
+                  dispatch(orderActions.placeOrder(cartItems, totalAmount));
+                  dispatch(cartActions.clearCart());
+                }}
               />
             </View>
 

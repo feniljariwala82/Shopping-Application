@@ -11,6 +11,7 @@ import ThemeBasedColors from "../../src/themes/Colors";
 import Normalize from "../../components/Reusable/Normalize";
 import ProductItem from "../../components/Shop/ProductItem";
 import { Icon } from "react-native-elements";
+import { Ionicons } from "@expo/vector-icons";
 
 const Colors = ThemeBasedColors();
 
@@ -79,6 +80,18 @@ ProductOverview.navigationOptions = (navData) => {
           />
         </View>
       </TouchableOpacity>
+    ),
+    headerLeft: () => (
+      <View style={{ marginLeft: Normalize(12) }}>
+        <Ionicons
+          name="menu-outline"
+          size={24}
+          color="black"
+          onPress={() => {
+            navData.navigation.toggleDrawer();
+          }}
+        />
+      </View>
     ),
   };
 };

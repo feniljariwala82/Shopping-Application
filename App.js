@@ -8,6 +8,7 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import { enableScreens } from "react-native-screens";
 import ThemeBasedColors from "./src/themes/Colors";
 import ShopNavigator from "./navigation/ShopNavigator";
+
 /**
  * Reducers
  */

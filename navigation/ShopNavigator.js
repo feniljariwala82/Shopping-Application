@@ -1,14 +1,36 @@
 import React from "react";
 import { createStackNavigator } from "react-navigation-stack";
 import { createAppContainer } from "react-navigation";
-import { Dimensions, Platform, View, TouchableOpacity } from "react-native";
+import { Dimensions, Platform, View } from "react-native";
 import ProductOverviewScreen from "../screens/shop/ProductOverview";
 import ThemeBasedColors from "../src/themes/Colors";
 import ProductDetailScreen from "../screens/shop/ProductDetail";
 import CartScreen from "../screens/shop/Cart";
+import OrderScreen from "../screens/shop/Order";
+import { createDrawerNavigator } from "react-navigation-drawer";
+import { Entypo, AntDesign } from "@expo/vector-icons";
+import Normalize from "../components/Reusable/Normalize";
 
 const Colors = ThemeBasedColors();
 const { width } = Dimensions.get("window");
+
+/**
+ * Reusing this code for default navigation options
+ */
+const defaultNavOptions = {
+  mode: Platform.OS === "android" ? "card" : "modal",
+  defaultNavigationOptions: {
+    headerStyle: {
+      backgroundColor: Colors.backgroundColor,
+    },
+    headerTintColor: Colors.textDark,
+    headerTitleAlign: "center",
+    headerTitleStyle: {
+      fontSize: width * 0.065,
+      fontFamily: "open-sans-bold",
+    },
+  },
+};
 
 const ProductNavigator = createStackNavigator(
   {
@@ -33,18 +55,65 @@ const ProductNavigator = createStackNavigator(
   },
   {
     mode: Platform.OS === "android" ? "card" : "modal",
-    defaultNavigationOptions: {
-      headerStyle: {
-        backgroundColor: Colors.backgroundColor,
-      },
-      headerTintColor: Colors.textDark,
-      headerTitleAlign: "center",
-      headerTitleStyle: {
-        fontSize: width * 0.065,
-        fontFamily: "open-sans-bold",
-      },
-    },
+    defaultNavigationOptions: defaultNavOptions,
   }
 );
 
-export default createAppContainer(ProductNavigator);
+const OrderNavigator = createStackNavigator(
+  {
+    Order: {
+      screen: OrderScreen,
+      navigationOptions: {
+        title: "My Orders",
+      },
+    },
+  },
+  {
+    defaultNavigationOptions: defaultNavOptions,
+  }
+);
+
+const MainShopNavigator = createDrawerNavigator(
+  {
+    Product: {
+      screen: ProductNavigator,
+      navigationOptions: {
+        title: "Products",
+        drawerIcon: (drawerConfig) => (
+          <View>
+            <Entypo
+              name="list"
+              size={width > 500 ? 24 : Normalize(20)}
+              color={drawerConfig.tintColor}
+            />
+          </View>
+        ),
+      },
+    },
+    Order: {
+      screen: OrderNavigator,
+      navigationOptions: {
+        title: "My Orders",
+        drawerIcon: (drawerConfig) => (
+          <View>
+            <AntDesign
+              name="shoppingcart"
+              size={width > 500 ? 24 : Normalize(20)}
+              color={drawerConfig.tintColor}
+            />
+          </View>
+        ),
+      },
+    },
+  },
+  {
+    contentOptions: {
+      activeTintColor: Colors.primary,
+      inactiveTintColor: Colors.textLight,
+    },
+    drawerType: "front",
+    drawerBackgroundColor: Colors.backgroundColor,
+  }
+);
+
+export default createAppContainer(MainShopNavigator);
