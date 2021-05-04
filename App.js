@@ -2,12 +2,13 @@ import React, { useState } from "react";
 import { StyleSheet } from "react-native";
 import AppLoading from "expo-app-loading";
 import * as Fonts from "expo-font";
-import { createStore, combineReducers } from "redux";
+import { createStore, combineReducers, applyMiddleware } from "redux";
 import { Provider } from "react-redux";
 import { composeWithDevTools } from "redux-devtools-extension";
 import { enableScreens } from "react-native-screens";
 import ThemeBasedColors from "./src/themes/Colors";
 import ShopNavigator from "./navigation/ShopNavigator";
+import ReduxThunk from "redux-thunk";
 
 /**
  * Reducers
@@ -25,7 +26,11 @@ const rootReducer = combineReducers({
   cart: cartReducer,
   order: orderReduce,
 });
-const store = createStore(rootReducer, composeWithDevTools());
+const store = createStore(
+  rootReducer,
+  applyMiddleware(ReduxThunk),
+  composeWithDevTools()
+);
 
 /**
  * Colors for our application

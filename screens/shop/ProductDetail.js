@@ -104,15 +104,16 @@ const ProductDetail = (props) => {
             );
           }}
         />
-        {/* buy now */}
+        {/* Go back */}
         <CustomButton
           buttonContainer={styles.buttonContainer}
           buttonContainer={{ backgroundColor: Colors.accent }}
-          title="Buy Now"
-          iconName="shopping-bag"
-          type="feather"
+          title="Go Back"
+          iconName="back"
+          type="antdesign"
           color="white"
           size={Normalize(18)}
+          onUserPress={() => props.navigation.pop()}
         />
       </View>
     </ScrollView>

@@ -11,6 +11,7 @@ import {
   Platform,
   Text,
   Alert,
+  KeyboardAvoidingView,
 } from "react-native";
 import { Ionicons, Feather } from "@expo/vector-icons";
 import ThemeBasedColors from "../../src/themes/Colors";
@@ -270,5 +271,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: Normalize(10),
     paddingVertical: Normalize(4),
     borderBottomWidth: 1,
+    fontSize: Normalize(14),
   },
 });

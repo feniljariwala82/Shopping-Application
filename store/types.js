@@ -5,3 +5,4 @@ export const PLACE_ORDER = "PLACE_ORDER";
 export const CANCEL_ORDER = "CANCEL_ORDER";
 export const CLEAR_CART = "CLEAR_CART";
 export const CREATE_PRODUCT = "CREATE_PRODUCT";
+export const ERROR_IN_ADD_PRODUCT = "ERROR_IN_ADD_PRODUCT";
