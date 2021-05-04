@@ -1,7 +1,6 @@
 import React from "react";
 import { StyleSheet, View, FlatList, Text } from "react-native";
 import { useSelector } from "react-redux";
-import DefaultText from "../../components/Reusable/DefaultText";
 import Normalize from "../../components/Reusable/Normalize";
 import { Ionicons } from "@expo/vector-icons";
 import ThemeBasedColors from "../../src/themes/Colors";
@@ -11,10 +10,16 @@ const Colors = ThemeBasedColors();
 
 const Order = () => {
   const orderedData = useSelector((state) => state.order.orders);
-  // console.log("Ordered data", orderedData);
 
   const renderData = (itemData) => {
-    return <OrderItem id={itemData.item.id} items={itemData.item.items} />;
+    return (
+      <OrderItem
+        id={itemData.item.id}
+        items={itemData.item.items}
+        amount={itemData.item.totalAmount}
+        date={itemData.item.readableDate}
+      />
+    );
   };
 
   return (

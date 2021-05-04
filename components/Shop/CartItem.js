@@ -12,6 +12,7 @@ const { height, width } = Dimensions.get("window");
 
 const CartItem = (props) => {
   const { imageUrl, title, description, id } = props.item;
+
   const dispatch = useDispatch();
 
   const deleteItemHandler = (id) => {
@@ -43,6 +44,7 @@ const CartItem = (props) => {
               isIconOnly={true}
               onUserPress={deleteItemHandler.bind(this, id)}
             />
+
             <CustomButton
               buttonContainer={{ width: Normalize(100) }}
               title="Buy Now"

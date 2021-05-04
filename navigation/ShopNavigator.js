@@ -7,8 +7,9 @@ import ThemeBasedColors from "../src/themes/Colors";
 import ProductDetailScreen from "../screens/shop/ProductDetail";
 import CartScreen from "../screens/shop/Cart";
 import OrderScreen from "../screens/shop/Order";
+import AddProductScreen from "../screens/user/AddProduct";
 import { createDrawerNavigator } from "react-navigation-drawer";
-import { Entypo, AntDesign } from "@expo/vector-icons";
+import { Entypo, AntDesign, Ionicons } from "@expo/vector-icons";
 import Normalize from "../components/Reusable/Normalize";
 
 const Colors = ThemeBasedColors();
@@ -73,6 +74,20 @@ const OrderNavigator = createStackNavigator(
   }
 );
 
+const AddProductNavigator = createStackNavigator(
+  {
+    Product: {
+      screen: AddProductScreen,
+      navigationOptions: {
+        title: "Add Product",
+      },
+    },
+  },
+  {
+    defaultNavigationOptions: defaultNavOptions,
+  }
+);
+
 const MainShopNavigator = createDrawerNavigator(
   {
     Product: {
@@ -98,6 +113,21 @@ const MainShopNavigator = createDrawerNavigator(
           <View>
             <AntDesign
               name="shoppingcart"
+              size={width > 500 ? 24 : Normalize(20)}
+              color={drawerConfig.tintColor}
+            />
+          </View>
+        ),
+      },
+    },
+    AddProduct: {
+      screen: AddProductNavigator,
+      navigationOptions: {
+        title: "Add Products",
+        drawerIcon: (drawerConfig) => (
+          <View>
+            <Ionicons
+              name="add-circle-outline"
               size={width > 500 ? 24 : Normalize(20)}
               color={drawerConfig.tintColor}
             />

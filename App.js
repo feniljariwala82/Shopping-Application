@@ -52,10 +52,6 @@ export default function App() {
   }
   return (
     <Provider store={store}>
-      {/* <View style={styles.screen}>
-        <Text style={styles.text}>Hey</Text>
-        <StatusBar style="dark" />
-      </View> */}
       <ShopNavigator />
     </Provider>
   );
