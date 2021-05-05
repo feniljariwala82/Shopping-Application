@@ -1,5 +1,6 @@
 import axios from "axios";
 import { CREATE_PRODUCT, ERROR_IN_ADD_PRODUCT } from "../types";
+import { API_URL } from "../DefaultData";
 
 export const createProduct = (title, imageUrl, description, price) => {
   return async (dispatch) => {
@@ -8,24 +9,22 @@ export const createProduct = (title, imageUrl, description, price) => {
         "Content-Type": "application/json",
       },
     };
+
     try {
       let res = await axios.post(
-        "/api/product/",
-        { title, imageUrl, description, price },
+        API_URL + "/product",
+        { title, imageUrl, description, price: parseFloat(price) },
         config
       );
       dispatch({
         type: CREATE_PRODUCT,
-        payload: {
-          title,
-          imageUrl,
-          description,
-          price: parseFloat(price),
-        },
+        payload: res.data,
       });
     } catch (error) {
+      console.log(error);
       dispatch({
         type: ERROR_IN_ADD_PRODUCT,
+        payload: error.response.data,
       });
     }
   };

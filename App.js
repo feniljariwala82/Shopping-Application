@@ -28,8 +28,7 @@ const rootReducer = combineReducers({
 });
 const store = createStore(
   rootReducer,
-  applyMiddleware(ReduxThunk),
-  composeWithDevTools()
+  composeWithDevTools(applyMiddleware(ReduxThunk))
 );
 
 /**

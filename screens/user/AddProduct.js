@@ -51,8 +51,14 @@ const AddProduct = (props) => {
       );
       return;
     }
-
-    dispatch(productActions.createProduct(title, imageUrl, description, price));
+    try {
+      dispatch(
+        productActions.createProduct(title, imageUrl, description, price)
+      );
+      return;
+    } catch (error) {
+      console.log(error);
+    }
     props.navigation.navigate("ProductOverview");
   }, [dispatch, title, imageUrl, description, price]);
 
