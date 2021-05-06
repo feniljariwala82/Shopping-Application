@@ -30,7 +30,7 @@ export default (state = initialState, { type, payload }) => {
       return {
         ...state,
         cartItems: state.cartItems.some(
-          (product) => product.id === addedProduct.id
+          (product) => product._id === addedProduct._id
         )
           ? state.cartItems
           : state.cartItems.concat(addedProduct),

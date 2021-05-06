@@ -5,6 +5,7 @@ import {
   FlatList,
   TouchableOpacity,
   Animated,
+  Text,
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import ThemeBasedColors from "../../src/themes/Colors";
@@ -13,6 +14,7 @@ import ProductItem from "../../components/Shop/ProductItem";
 import { Icon } from "react-native-elements";
 import { Ionicons } from "@expo/vector-icons";
 import * as productActions from "../../store/actions/productAct";
+import Spinner from "../../components/layout/Spinner";
 
 const Colors = ThemeBasedColors();
 
@@ -20,7 +22,7 @@ const ProductOverview = (props) => {
   // animation state
   const [fadeAnimation, setFadeAnimation] = useState(new Animated.Value(0.5));
   const [error, setError] = useState(null);
-  const [success, setSuccessMessage] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const fadeIn = () => {
     Animated.timing(fadeAnimation, {
@@ -34,16 +36,19 @@ const ProductOverview = (props) => {
 
   useEffect(() => {
     fadeIn();
-    try {
-      dispatch(productActions.getAllProducts());
-    } catch (error) {
-      setError(useSelector((state) => state.products.availableProducts.error));
-    }
+    // loading data
+    const loadData = async () => {
+      setIsLoading(true);
+      try {
+        await dispatch(productActions.getAllProducts());
+        setIsLoading(false);
+      } catch (error) {
+        setError(useSelector((state) => state.products.error));
+        setIsLoading(false);
+      }
+    };
+    loadData();
   }, [dispatch]);
-
-  if (error) {
-    console.log(error);
-  }
 
   // available products
   const availProducts = useSelector(
@@ -52,21 +57,39 @@ const ProductOverview = (props) => {
 
   // rendering products one by one
   const renderProduct = (itemData) => {
-    console.log(itemData.item);
     return (
-      <Animated.View style={{ opacity: fadeAnimation }}>
-        <ProductItem
-          title={itemData.item.title}
-          price={itemData.item.price}
-          imageUrl={itemData.item.imageUrl}
-          id={itemData.item._id}
-          product={itemData.item}
-          {...props}
-        />
-      </Animated.View>
+      // <Animated.View style={{ opacity: fadeAnimation }}>
+      <ProductItem
+        title={itemData.item.title}
+        price={itemData.item.price}
+        imageUrl={itemData.item.imageUrl}
+        id={itemData.item._id}
+        product={itemData.item}
+        key={itemData.item._id}
+        {...props}
+      />
+      // </Animated.View>
     );
   };
 
+  if (isLoading) {
+    return <Spinner />;
+  }
+
+  // if no products found
+  if (!isLoading && availProducts.length === 0) {
+    return (
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Text>No Products found. Try adding some!</Text>
+      </View>
+    );
+  }
   return (
     <View style={styles.screen}>
       <FlatList

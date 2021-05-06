@@ -26,7 +26,7 @@ const Cart = (props) => {
   const dispatch = useDispatch();
 
   const renderProduct = (itemData) => {
-    return <CartItem item={itemData.item} />;
+    return <CartItem item={itemData.item} {...props} />;
   };
 
   return (

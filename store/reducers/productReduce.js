@@ -8,8 +8,8 @@ import {
 import Product from "../../models/Product";
 
 const initialState = {
-  availableProducts: null,
-  userProducts: null,
+  availableProducts: [],
+  userProducts: [],
   error: null,
   success: null,
 };

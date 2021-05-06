@@ -47,12 +47,12 @@ const CartItem = (props) => {
 
             <CustomButton
               buttonContainer={{ width: Normalize(100) }}
-              title="Buy Now"
-              iconName="shopping-bag"
-              type="feather"
+              title="Go Back"
+              iconName="back"
+              type="antdesign"
               color="white"
               size={Normalize(18)}
-              onUserPress={() => console.log("hey")}
+              onUserPress={() => props.navigation.goBack()}
             />
           </View>
         </View>

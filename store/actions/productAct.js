@@ -16,7 +16,6 @@ export const getAllProducts = () => {
         payload: res.data.response,
       });
     } catch (error) {
-      console.log(error);
       dispatch({
         type: ERROR_IN_FETCH_PRODUCTS,
         payload: error.response.data,
