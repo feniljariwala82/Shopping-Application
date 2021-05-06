@@ -11,7 +11,6 @@ import {
   Platform,
   Text,
   Alert,
-  KeyboardAvoidingView,
 } from "react-native";
 import { Ionicons, Feather } from "@expo/vector-icons";
 import ThemeBasedColors from "../../src/themes/Colors";
@@ -19,6 +18,7 @@ import Normalize from "../../components/Reusable/Normalize";
 import DefaultText from "../../components/Reusable/DefaultText";
 import { useDispatch } from "react-redux";
 import * as productActions from "../../store/actions/productAct";
+import CustomButton from "../../components/layout/CustomButton";
 
 const Colors = ThemeBasedColors();
 
@@ -55,11 +55,11 @@ const AddProduct = (props) => {
       dispatch(
         productActions.createProduct(title, imageUrl, description, price)
       );
-      return;
+      props.navigation.navigate("ProductOverview");
     } catch (error) {
       console.log(error);
+      return;
     }
-    props.navigation.navigate("ProductOverview");
   }, [dispatch, title, imageUrl, description, price]);
 
   useEffect(() => {
@@ -67,7 +67,7 @@ const AddProduct = (props) => {
   }, [addProductHandler]);
 
   const titleChangeHandler = (text) => {
-    var pattern = RegExp(/^[a-zA-Z ]*$/);
+    var pattern = RegExp(/^[a-zA-Z-.'"& ]*$/);
     if (pattern.test(text) && text.trim().length > 0) {
       setIsTitleValid(true);
     } else {
@@ -89,7 +89,7 @@ const AddProduct = (props) => {
   };
 
   const priceChangeHandler = (text) => {
-    var pattern = RegExp(/^\d+$/);
+    var pattern = RegExp(/^-?\d*(\.\d+)?$/);
     if (pattern.test(text) && text.length > 0 && text != 0) {
       setIsPriceValid(true);
     } else {
@@ -99,13 +99,19 @@ const AddProduct = (props) => {
   };
 
   const descriptionHandler = (text) => {
-    var pattern = RegExp(/^[a-zA-Z0-9 ]*$/);
-    if (pattern.test(text) && text.trim().length > 10) {
+    if (text.trim().length > 10) {
       setIsDescriptionValid(true);
     } else {
       setIsDescriptionValid(false);
     }
     setDescription(text);
+  };
+
+  const resetHandler = () => {
+    setTitle("");
+    setImageUrl("");
+    setDescription("");
+    setPrice("");
   };
 
   return (
@@ -213,8 +219,25 @@ const AddProduct = (props) => {
                   fontSize: Normalize(12),
                 }}
               >
-                Please enter valid product description
+                Product description must be long upto 10 characters
               </Text>
+            )}
+          </View>
+          <View style={{ alignItems: "center", marginVertical: Normalize(16) }}>
+            {title.length != 0 ||
+            description.length != 0 ||
+            price.length != 0 ||
+            imageUrl.length != 0 ? (
+              <CustomButton
+                title="Reset"
+                onUserPress={resetHandler}
+                iconName="refresh"
+                type="ionicons"
+                color="white"
+                size={Normalize(18)}
+              />
+            ) : (
+              <Text></Text>
             )}
           </View>
         </View>

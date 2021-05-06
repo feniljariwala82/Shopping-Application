@@ -6,18 +6,21 @@ import {
   TouchableOpacity,
   Animated,
 } from "react-native";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import ThemeBasedColors from "../../src/themes/Colors";
 import Normalize from "../../components/Reusable/Normalize";
 import ProductItem from "../../components/Shop/ProductItem";
 import { Icon } from "react-native-elements";
 import { Ionicons } from "@expo/vector-icons";
+import * as productActions from "../../store/actions/productAct";
 
 const Colors = ThemeBasedColors();
 
 const ProductOverview = (props) => {
   // animation state
   const [fadeAnimation, setFadeAnimation] = useState(new Animated.Value(0.5));
+  const [error, setError] = useState(null);
+  const [success, setSuccessMessage] = useState(null);
 
   const fadeIn = () => {
     Animated.timing(fadeAnimation, {
@@ -27,9 +30,20 @@ const ProductOverview = (props) => {
     }).start();
   };
 
+  const dispatch = useDispatch();
+
   useEffect(() => {
     fadeIn();
-  }, []);
+    try {
+      dispatch(productActions.getAllProducts());
+    } catch (error) {
+      setError(useSelector((state) => state.products.availableProducts.error));
+    }
+  }, [dispatch]);
+
+  if (error) {
+    console.log(error);
+  }
 
   // available products
   const availProducts = useSelector(
@@ -38,13 +52,14 @@ const ProductOverview = (props) => {
 
   // rendering products one by one
   const renderProduct = (itemData) => {
+    console.log(itemData.item);
     return (
       <Animated.View style={{ opacity: fadeAnimation }}>
         <ProductItem
           title={itemData.item.title}
           price={itemData.item.price}
           imageUrl={itemData.item.imageUrl}
-          id={itemData.item.id}
+          id={itemData.item._id}
           product={itemData.item}
           {...props}
         />

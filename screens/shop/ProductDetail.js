@@ -24,7 +24,7 @@ const ProductDetail = (props) => {
   const availProducts = useSelector(
     (state) => state.products.availableProducts
   );
-  const productData = availProducts.find((product) => product.id === prodId);
+  const productData = availProducts.find((product) => product._id === prodId);
   const dispatch = useDispatch();
   return (
     <ScrollView style={styles.screen}>
