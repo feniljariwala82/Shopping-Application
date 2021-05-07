@@ -1,26 +1,64 @@
-import React from "react";
-import { StyleSheet, View, FlatList, Text } from "react-native";
-import { useSelector } from "react-redux";
+import React, { useEffect, useState, useCallback } from "react";
+import { StyleSheet, View, FlatList } from "react-native";
+import { useSelector, useDispatch } from "react-redux";
 import Normalize from "../../components/Reusable/Normalize";
 import { Ionicons } from "@expo/vector-icons";
 import ThemeBasedColors from "../../src/themes/Colors";
 import OrderItem from "../../components/Shop/OrderItem";
+import * as orderActions from "../../store/actions/orderAct";
+import Spinner from "../../components/layout/Spinner";
 
 const Colors = ThemeBasedColors();
 
-const Order = () => {
+const Order = (props) => {
+  const dispatch = useDispatch();
+  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const loadData = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      await dispatch(orderActions.fetchOrders());
+    } catch (error) {
+      setError(useSelector((state) => state.order.error));
+    }
+    setIsLoading(false);
+  }, [dispatch, setIsLoading, setError]);
+
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  useEffect(() => {
+    let willFocusSubscription = props.navigation.addListener(
+      "willFocus",
+      () => {
+        loadData();
+      }
+    );
+    return () => {
+      willFocusSubscription.remove();
+    };
+  }, [loadData]);
+
+  // fetching orders from the store
   const orderedData = useSelector((state) => state.order.orders);
 
   const renderData = (itemData) => {
     return (
       <OrderItem
-        id={itemData.item.id}
+        id={itemData.item.items._id}
         items={itemData.item.items}
         amount={itemData.item.totalAmount}
-        date={itemData.item.readableDate}
+        date={itemData.item.orderedDate}
+        key={itemData.item.items._id}
       />
     );
   };
+
+  if (isLoading) {
+    return <Spinner />;
+  }
 
   return (
     <View style={styles.screen}>

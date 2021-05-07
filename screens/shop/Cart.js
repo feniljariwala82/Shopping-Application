@@ -54,8 +54,10 @@ const Cart = (props) => {
                 color="white"
                 size={Normalize(18)}
                 buttonContainer={styles.button}
-                onUserPress={() => {
-                  dispatch(orderActions.placeOrder(cartItems, totalAmount));
+                onUserPress={async () => {
+                  await dispatch(
+                    orderActions.placeOrder(cartItems, totalAmount)
+                  );
                   dispatch(cartActions.clearCart());
                 }}
               />

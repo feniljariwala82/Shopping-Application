@@ -18,7 +18,7 @@ export const getAllProducts = () => {
     } catch (error) {
       dispatch({
         type: ERROR_IN_FETCH_PRODUCTS,
-        payload: error.response.data,
+        payload: error.response.data.error,
       });
     }
   };
@@ -35,7 +35,12 @@ export const createProduct = (title, imageUrl, description, price) => {
     try {
       let res = await axios.post(
         API_URL + "/product",
-        { title, imageUrl, description, price: parseFloat(price) },
+        {
+          title: title.trim(),
+          imageUrl: imageUrl.trim(),
+          description: description.trim(),
+          price: parseFloat(price.trim()),
+        },
         config
       );
 
@@ -51,13 +56,13 @@ export const createProduct = (title, imageUrl, description, price) => {
           price: parseFloat(price.trim()),
         },
       });
-      return Promise.resolve({ success: res.data.response.status });
+      return Promise.resolve("ok");
     } catch (error) {
       dispatch({
         type: ERROR_IN_ADD_PRODUCT,
-        payload: error.response.data,
+        payload: error.response.data.error,
       });
-      return Promise.reject({ error: error.response.data });
+      return Promise.reject(error.response.data.error);
     }
   };
 };

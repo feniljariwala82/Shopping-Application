@@ -16,9 +16,10 @@ import { Ionicons, Feather } from "@expo/vector-icons";
 import ThemeBasedColors from "../../src/themes/Colors";
 import Normalize from "../../components/Reusable/Normalize";
 import DefaultText from "../../components/Reusable/DefaultText";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import * as productActions from "../../store/actions/productAct";
 import CustomButton from "../../components/layout/CustomButton";
+import Spinner from "../../components/layout/Spinner";
 
 const Colors = ThemeBasedColors();
 
@@ -35,7 +36,11 @@ const AddProduct = (props) => {
   const [isPriceValid, setIsPriceValid] = useState(false);
   const [isDescriptionValid, setIsDescriptionValid] = useState(false);
 
-  const addProductHandler = useCallback(() => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const addProductHandler = useCallback(async () => {
+    setIsLoading(true);
     if (!isTitleValid || !isUrlValid || !isPriceValid || !isDescriptionValid) {
       Alert.alert(
         "Wrong Input!",
@@ -49,22 +54,35 @@ const AddProduct = (props) => {
           },
         ]
       );
+      setIsLoading(false);
       return;
     }
     try {
-      dispatch(
+      await dispatch(
         productActions.createProduct(title, imageUrl, description, price)
       );
+      setIsLoading(false);
       props.navigation.navigate("ProductOverview");
     } catch (error) {
-      console.log(error);
+      setError(error);
+      setIsLoading(false);
       return;
     }
-  }, [dispatch, title, imageUrl, description, price]);
+  }, [dispatch, title, imageUrl, description, price, setIsLoading, setError]);
 
   useEffect(() => {
     props.navigation.setParams({ addProduct: addProductHandler });
   }, [addProductHandler]);
+
+  // error handler
+  if (error) {
+    Alert.alert("Error", error, [
+      {
+        text: "OK",
+        onPress: () => setError(""),
+      },
+    ]);
+  }
 
   const titleChangeHandler = (text) => {
     var pattern = RegExp(/^[a-zA-Z-.'"& ]*$/);
@@ -112,6 +130,11 @@ const AddProduct = (props) => {
     setImageUrl("");
     setDescription("");
     setPrice("");
+    setError("");
+    setIsTitleValid(false);
+    setIsUrlValid(false);
+    setIsDescriptionValid(false);
+    setIsPriceValid(false);
   };
 
   return (

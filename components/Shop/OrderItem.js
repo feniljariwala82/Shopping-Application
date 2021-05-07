@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from "react-native";
 import CustomButton from "../layout/CustomButton";
 import Normalize from "../Reusable/Normalize";
 import ThemeBasedColors from "../../src/themes/Colors";
+import moment from "moment";
 
 const Colors = ThemeBasedColors();
 
@@ -13,7 +14,9 @@ const OrderItem = (props) => {
     <View style={styles.orderItem}>
       <View style={styles.summary}>
         <Text style={styles.totalAmount}>${props.amount}</Text>
-        <Text style={styles.date}>{props.date}</Text>
+        <Text style={styles.date}>
+          {moment(props.date).format("MMMM Do YYYY, hh:mm")}
+        </Text>
       </View>
       <View style={styles.buttonContainer}>
         <CustomButton

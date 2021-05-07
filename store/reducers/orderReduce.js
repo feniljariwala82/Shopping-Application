@@ -1,24 +1,44 @@
-import { PLACE_ORDER, CANCEL_ORDER } from "../types";
+import {
+  PLACE_ORDER,
+  ERROR_IN_PLACE_ORDER,
+  FETCH_ORDERS,
+  ERROR_IN_FETCH_ORDERS,
+} from "../types";
 import Order from "../../models/Orders";
-import "react-native-get-random-values";
-import { v4 as uuid } from "uuid";
 
 const initialState = {
   orders: [],
+  success: null,
+  error: null,
 };
 
 export default (state = initialState, { type, payload }) => {
   switch (type) {
     case PLACE_ORDER:
       const newOrder = new Order(
-        uuid(),
+        payload.orderId,
         payload.cartItems,
         payload.totalAmount,
-        new Date()
+        payload.orderedDate
       );
       return {
         ...state,
         orders: state.orders.concat(newOrder),
+        success: payload.success,
+      };
+
+    case FETCH_ORDERS:
+      return {
+        ...state,
+        orders: payload,
+      };
+
+    case ERROR_IN_FETCH_ORDERS:
+    case ERROR_IN_PLACE_ORDER:
+      return {
+        ...state,
+        orders: [],
+        error: payload,
       };
 
     default:

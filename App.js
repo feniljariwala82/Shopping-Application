@@ -15,7 +15,7 @@ import ReduxThunk from "redux-thunk";
  */
 import productReducer from "./store/reducers/productReduce";
 import cartReducer from "./store/reducers/cartReduce";
-import orderReduce from "./store/reducers/orderReduce";
+import orderReducer from "./store/reducers/orderReduce";
 
 // calling this function to improve memory and CPU usage
 enableScreens();
@@ -24,7 +24,7 @@ enableScreens();
 const rootReducer = combineReducers({
   products: productReducer,
   cart: cartReducer,
-  order: orderReduce,
+  order: orderReducer,
 });
 const store = createStore(
   rootReducer,

@@ -1,4 +1,3 @@
-import PRODUCTS from "../../data/dummy-data";
 import {
   CREATE_PRODUCT,
   ERROR_IN_ADD_PRODUCT,
@@ -52,8 +51,6 @@ export default (state = initialState, { type, payload }) => {
         ...state,
         availableProducts: payload,
         userProducts: payload.filter((prod) => prod.addedBy === "u1"),
-        error: null,
-        success: null,
       };
 
     /**

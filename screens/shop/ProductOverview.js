@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   StyleSheet,
   View,
@@ -34,21 +34,33 @@ const ProductOverview = (props) => {
 
   const dispatch = useDispatch();
 
+  // loading data
+  const loadData = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      await dispatch(productActions.getAllProducts());
+    } catch (error) {
+      setError(useSelector((state) => state.products.error));
+    }
+    setIsLoading(false);
+  }, [setIsLoading, dispatch, setError]);
+
   useEffect(() => {
     fadeIn();
-    // loading data
-    const loadData = async () => {
-      setIsLoading(true);
-      try {
-        await dispatch(productActions.getAllProducts());
-        setIsLoading(false);
-      } catch (error) {
-        setError(useSelector((state) => state.products.error));
-        setIsLoading(false);
-      }
-    };
     loadData();
   }, [dispatch]);
+
+  useEffect(() => {
+    let willFocusSubscription = props.navigation.addListener(
+      "willFocus",
+      () => {
+        loadData();
+      }
+    );
+    return () => {
+      willFocusSubscription.remove();
+    };
+  }, [loadData]);
 
   // available products
   const availProducts = useSelector(
@@ -74,6 +86,16 @@ const ProductOverview = (props) => {
 
   if (isLoading) {
     return <Spinner />;
+  }
+
+  if (error) {
+    return (
+      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+        <Text style={{ fontFamily: "open-sans-bold", color: Colors.danger }}>
+          Error: {error}
+        </Text>
+      </View>
+    );
   }
 
   // if no products found
