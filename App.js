@@ -3,11 +3,11 @@ import { StyleSheet } from "react-native";
 import AppLoading from "expo-app-loading";
 import * as Fonts from "expo-font";
 import { createStore, combineReducers, applyMiddleware } from "redux";
-import { Provider } from "react-redux";
 import { composeWithDevTools } from "redux-devtools-extension";
 import { enableScreens } from "react-native-screens";
 import ThemeBasedColors from "./src/themes/Colors";
-import ShopNavigator from "./navigation/ShopNavigator";
+import NavigationContainer from "./navigation/NavigationContainer";
+import { Provider } from "react-redux";
 import ReduxThunk from "redux-thunk";
 
 /**
@@ -16,16 +16,27 @@ import ReduxThunk from "redux-thunk";
 import productReducer from "./store/reducers/productReduce";
 import cartReducer from "./store/reducers/cartReduce";
 import orderReducer from "./store/reducers/orderReduce";
+import authReducer from "./store/reducers/authReduce";
 
 // calling this function to improve memory and CPU usage
 enableScreens();
 
 // Redux configuration
-const rootReducer = combineReducers({
+const appReducer = combineReducers({
   products: productReducer,
   cart: cartReducer,
   order: orderReducer,
+  auth: authReducer,
 });
+
+// We are doing this to set store data as initialState when user logs out!
+const rootReducer = (state, action) => {
+  if (action.type === "LOGOUT") {
+    return appReducer(undefined, action);
+  }
+  return appReducer(state, action);
+};
+
 const store = createStore(
   rootReducer,
   composeWithDevTools(applyMiddleware(ReduxThunk))
@@ -56,19 +67,9 @@ export default function App() {
   }
   return (
     <Provider store={store}>
-      <ShopNavigator />
+      <NavigationContainer />
     </Provider>
   );
 }
 
-const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: Colors.backgroundColor,
-  },
-  text: {
-    color: Colors.textDark,
-  },
-});
+const styles = StyleSheet.create({});

@@ -3,6 +3,7 @@ import {
   ERROR_IN_PLACE_ORDER,
   FETCH_ORDERS,
   ERROR_IN_FETCH_ORDERS,
+  RESET_ORDER_DATA,
 } from "../types";
 import Order from "../../models/Orders";
 

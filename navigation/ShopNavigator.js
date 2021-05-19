@@ -1,16 +1,23 @@
 import React from "react";
 import { createStackNavigator } from "react-navigation-stack";
-import { createAppContainer } from "react-navigation";
-import { Dimensions, Platform, View } from "react-native";
+import { createAppContainer, createSwitchNavigator } from "react-navigation";
+import { Dimensions, Platform, View, SafeAreaView, Button } from "react-native";
 import ProductOverviewScreen from "../screens/shop/ProductOverview";
 import ThemeBasedColors from "../src/themes/Colors";
 import ProductDetailScreen from "../screens/shop/ProductDetail";
 import CartScreen from "../screens/shop/Cart";
 import OrderScreen from "../screens/shop/Order";
 import AddProductScreen from "../screens/user/AddProduct";
-import { createDrawerNavigator } from "react-navigation-drawer";
+import StartUpScreen from "../screens/StartUpScreen";
+import {
+  createDrawerNavigator,
+  DrawerNavigatorItems,
+} from "react-navigation-drawer";
 import { Entypo, AntDesign, Ionicons } from "@expo/vector-icons";
 import Normalize from "../components/Reusable/Normalize";
+import AuthScreen from "../screens/user/AuthScreen";
+import { useDispatch } from "react-redux";
+import * as authActions from "../store/actions/authAct";
 
 const Colors = ThemeBasedColors();
 const { width } = Dimensions.get("window");
@@ -94,6 +101,7 @@ const MainShopNavigator = createDrawerNavigator(
       screen: ProductNavigator,
       navigationOptions: {
         title: "Products",
+        headerTitleAlign: "center",
         drawerIcon: (drawerConfig) => (
           <View>
             <Entypo
@@ -109,6 +117,7 @@ const MainShopNavigator = createDrawerNavigator(
       screen: OrderNavigator,
       navigationOptions: {
         title: "My Orders",
+        headerTitleAlign: "center",
         drawerIcon: (drawerConfig) => (
           <View>
             <AntDesign
@@ -124,6 +133,7 @@ const MainShopNavigator = createDrawerNavigator(
       screen: AddProductNavigator,
       navigationOptions: {
         title: "Add Products",
+        headerTitleAlign: "center",
         drawerIcon: (drawerConfig) => (
           <View>
             <Ionicons
@@ -143,7 +153,50 @@ const MainShopNavigator = createDrawerNavigator(
     },
     drawerType: "front",
     drawerBackgroundColor: Colors.backgroundColor,
+    contentComponent: (props) => {
+      const dispatch = useDispatch();
+      return (
+        <View style={{ flex: 1, paddingTop: Normalize(20) }}>
+          <SafeAreaView forceInset={{ top: "window", horizontal: "never" }}>
+            <DrawerNavigatorItems {...props} />
+            <Button
+              title="Logout"
+              color={Colors.primary}
+              onPress={() => {
+                dispatch(authActions.logout());
+                // props.navigation.navigate("Auth");
+              }}
+            />
+          </SafeAreaView>
+        </View>
+      );
+    },
   }
 );
 
-export default createAppContainer(MainShopNavigator);
+const AuthNavigator = createStackNavigator(
+  {
+    Auth: {
+      screen: AuthScreen,
+      navigationOptions: {
+        headerTitle: "Authentication",
+        headerTitleAlign: "center",
+        headerTransparent: true,
+        headerTintColor: Colors.accent,
+        headerTitleStyle: {
+          fontFamily: "open-sans-bold",
+          fontSize: Normalize(20),
+        },
+      },
+    },
+  },
+  { defaultNavigationOptions: defaultNavOptions }
+);
+
+const MainSwitchNavigator = createSwitchNavigator({
+  StartUp: StartUpScreen,
+  Auth: AuthNavigator,
+  Shop: MainShopNavigator,
+});
+
+export default createAppContainer(MainSwitchNavigator);

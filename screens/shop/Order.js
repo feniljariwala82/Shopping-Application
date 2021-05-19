@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { StyleSheet, View, FlatList } from "react-native";
+import { StyleSheet, View, FlatList, Text } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import Normalize from "../../components/Reusable/Normalize";
 import { Ionicons } from "@expo/vector-icons";
@@ -43,6 +43,30 @@ const Order = (props) => {
 
   // fetching orders from the store
   const orderedData = useSelector((state) => state.order.orders);
+
+  if (orderedData.length === 0 && !isLoading) {
+    return (
+      <View
+        style={{
+          flex: 1,
+          backgroundColor: Colors.backgroundColor,
+          alignItems: "center",
+          justifyContent: "center",
+          padding: Normalize(16),
+        }}
+      >
+        <Text
+          style={{
+            fontFamily: "open-sans",
+            fontSize: Normalize(16),
+            textAlign: "center",
+          }}
+        >
+          You haven't placed any orders. Try adding some
+        </Text>
+      </View>
+    );
+  }
 
   const renderData = (itemData) => {
     return (

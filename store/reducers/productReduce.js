@@ -49,8 +49,11 @@ export default (state = initialState, { type, payload }) => {
     case FETCH_PRODUCTS:
       return {
         ...state,
-        availableProducts: payload,
-        userProducts: payload.filter((prod) => prod.addedBy === "u1"),
+        availableProducts: payload.products,
+        userProducts: payload.products.filter(
+          (prod) => prod.addedBy === payload.ownerId
+        ),
+        error: null,
       };
 
     /**

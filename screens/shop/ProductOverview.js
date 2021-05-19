@@ -88,16 +88,6 @@ const ProductOverview = (props) => {
     return <Spinner />;
   }
 
-  if (error) {
-    return (
-      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-        <Text style={{ fontFamily: "open-sans-bold", color: Colors.danger }}>
-          Error: {error}
-        </Text>
-      </View>
-    );
-  }
-
   // if no products found
   if (!isLoading && availProducts.length === 0) {
     return (
@@ -112,9 +102,12 @@ const ProductOverview = (props) => {
       </View>
     );
   }
+
   return (
     <View style={styles.screen}>
       <FlatList
+        onRefresh={loadData}
+        refreshing={isLoading}
         data={availProducts}
         keyExtractor={(item) => item.id}
         renderItem={renderProduct}

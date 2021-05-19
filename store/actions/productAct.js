@@ -1,19 +1,28 @@
-import axios from "axios";
 import {
   CREATE_PRODUCT,
   ERROR_IN_ADD_PRODUCT,
   FETCH_PRODUCTS,
   ERROR_IN_FETCH_PRODUCTS,
 } from "../types";
+
 import { API_URL } from "../Defaults";
+import AxiosInstance from "../utils/AxiosInstance";
 
 export const getAllProducts = () => {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
+    const config = {
+      headers: {
+        "x-auth-token": getState().auth.token,
+      },
+    };
     try {
-      let res = await axios.get(API_URL + "/product");
+      let res = await AxiosInstance.get(API_URL + "/product", config);
       dispatch({
         type: FETCH_PRODUCTS,
-        payload: res.data.response,
+        payload: {
+          products: res.data.response,
+          ownerId: getState().auth.user.email,
+        },
       });
     } catch (error) {
       dispatch({
@@ -25,15 +34,14 @@ export const getAllProducts = () => {
 };
 
 export const createProduct = (title, imageUrl, description, price) => {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
     const config = {
       headers: {
-        "Content-Type": "application/json",
+        "x-auth-token": getState().auth.token,
       },
     };
-
     try {
-      let res = await axios.post(
+      let res = await AxiosInstance.post(
         API_URL + "/product",
         {
           title: title.trim(),

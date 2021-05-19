@@ -9,11 +9,17 @@ import {
 import "react-native-get-random-values";
 import { v4 as uuid } from "uuid";
 import { API_URL } from "../Defaults";
+import AxiosInstance from "../utils/AxiosInstance";
 
 export const fetchOrders = () => {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
     try {
-      let res = await axios.get(API_URL + "/order");
+      const config = {
+        headers: {
+          "x-auth-token": getState().auth.token,
+        },
+      };
+      let res = await AxiosInstance.get(API_URL + "/order", config);
       dispatch({
         type: FETCH_ORDERS,
         payload: res.data.response,
@@ -28,12 +34,12 @@ export const fetchOrders = () => {
 };
 
 export const placeOrder = (cartItems, totalAmount) => {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
     try {
       let id = uuid();
       const config = {
         headers: {
-          "Content-Type": "application/json",
+          "x-auth-token": getState().auth.token,
         },
       };
       let res = await axios.post(

@@ -16,10 +16,9 @@ import { Ionicons, Feather } from "@expo/vector-icons";
 import ThemeBasedColors from "../../src/themes/Colors";
 import Normalize from "../../components/Reusable/Normalize";
 import DefaultText from "../../components/Reusable/DefaultText";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import * as productActions from "../../store/actions/productAct";
 import CustomButton from "../../components/layout/CustomButton";
-import Spinner from "../../components/layout/Spinner";
 
 const Colors = ThemeBasedColors();
 
