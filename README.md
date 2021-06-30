@@ -7,7 +7,5 @@ What you can't see is the authentication system. I have built an authentication 
 Point to be noted: Do something great today.
 
 References: 
-https://www.npmjs.com/package/jsonwebtoken
-https://expressjs.com/
-https://reactnative.dev/
+https://www.npmjs.com/package/jsonwebtoken, https://expressjs.com/, https://reactnative.dev/
 
